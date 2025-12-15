@@ -21,19 +21,18 @@
 </header>
 
 <nav>
-    <button class="active" onclick="openTab('about', this)">О клубе</button>
-    <button onclick="openTab('boardgames', this)">Настолки</button>
-    <button onclick="openTab('rpg', this)">НРІ</button>
-    <button onclick="openTab('wargames', this)">Варгеймы</button>
-    <button onclick="openTab('masters', this)">Мастера</button>
-    <button onclick="openTab('gallery', this)">Галерея</button>
-    <button onclick="openTab('rules', this)">Правила</button>
+    <a href="#about" class="active">О клубе</a>
+    <a href="#boardgames">Настолки</a>
+    <a href="#rpg">НРІ</a>
+    <a href="#wargames">Варгеймы</a>
+    <a href="#masters">Мастера</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#rules">Правила</a>
 </nav>
 
 <main>
 
-    <!-- О КЛУБЕ -->
-    <section id="about" class="tab active">
+    <section id="about">
         <h2>О клубе</h2>
 
         <p>
@@ -54,38 +53,37 @@
         </ul>
     </section>
 
-    <!-- НАСТОЛКИ -->
-    <section id="boardgames" class="tab">
+    <section id="boardgames">
         <h2>Настільні ігри</h2>
-        <div id="boardgames-list" class="games-table"></div>
+        <div id="boardgames-list" class="games-table">
+            </div>
+        
+        <div class="section-footer">
+            <a href="boardgames-full.html" class="button-more">Більше настолок...</a>
+        </div>
     </section>
 
-    <!-- НРІ -->
-    <section id="rpg" class="tab">
+    <section id="rpg">
         <h2>Настільно-рольові ігри</h2>
         <div id="rpg-list" class="games-table"></div>
     </section>
 
-    <!-- ВАРГЕЙМЫ -->
-    <section id="wargames" class="tab">
+    <section id="wargames">
         <h2>Варгейми та скірміші</h2>
         <div id="wargames-list" class="games-table"></div>
     </section>
 
-    <!-- МАСТЕРА -->
-    <section id="masters" class="tab">
+    <section id="masters">
         <h2>Наші майстри</h2>
         <div id="masters-list" class="masters-list"></div>
     </section>
 
-    <!-- ГАЛЕРЕЯ -->
-    <section id="gallery" class="tab">
+    <section id="gallery">
         <h2>Галерея</h2>
         <div id="gallery-list" class="gallery"></div>
     </section>
 
-    <!-- ПРАВИЛА -->
-    <section id="rules" class="tab">
+    <section id="rules">
         <h2>Правила клубу</h2>
 
         <h3>1. Загальні положення</h3>
@@ -110,21 +108,6 @@
 <footer>
     © 2025 Crits n Shits
 </footer>
-
-<script>
-    function openTab(tabId, button) {
-        document.querySelectorAll('.tab').forEach(tab =>
-            tab.classList.remove('active')
-        );
-
-        document.querySelectorAll('nav button').forEach(btn =>
-            btn.classList.remove('active')
-        );
-
-        document.getElementById(tabId).classList.add('active');
-        button.classList.add('active');
-    }
-</script>
 
 <script src="js/data-loader.js"></script>
 
