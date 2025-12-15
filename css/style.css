@@ -194,6 +194,24 @@ h2 {
     color: var(--text-muted);
 }
 
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.game-header strong {
+    font-size: 1.2em;
+}
+
+.game-meta {
+    font-size: 0.9em;
+    opacity: 0.9;
+    display: flex;
+    gap: 10px;
+}
+
 /* =====================
    МАСТЕРА
 ===================== */
