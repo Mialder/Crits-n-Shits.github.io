@@ -112,6 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGames("data/rpg.json", "rpg-list");
     loadGames("data/wargames.json", "wargames-list");
     loadMasters();
-    loadGallery(3);
+    loadGallery(5);
 });
 
