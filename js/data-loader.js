@@ -83,13 +83,21 @@ async function loadMasters() {
     });
 }
 
-async function loadGallery() {
+async function loadGallery(count = -1) {
     const response = await fetch("data/gallery.json");
     const data = await response.json();
 
+    let itemsToDisplay = data;
+    
+    // Если указан count, выбираем случайные фото
+    if (count > 0) {
+        itemsToDisplay = shuffleArray(data).slice(0, count);
+    }
+    
     const container = document.getElementById("gallery-list");
+    container.innerHTML = "";
 
-    data.forEach(item => {
+    itemsToDisplay.forEach(item => {
         const img = document.createElement("img");
         img.src = item.image;
         img.alt = item.alt || "Фото клуба";
@@ -104,6 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGames("data/rpg.json", "rpg-list");
     loadGames("data/wargames.json", "wargames-list");
     loadMasters();
-    loadGallery();
+    loadGallery(3);
 });
 
