@@ -3,6 +3,7 @@ async function loadGames(url, containerId) {
     const data = await response.json();
 
     const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
     data.forEach(item => {
         const row = document.createElement("div");
@@ -11,13 +12,35 @@ async function loadGames(url, containerId) {
 
         row.innerHTML = `
             <div class="game-content">
-                <strong>${item.title}</strong>
-                <span>${item.description}</span>
+                <div class="game-header">
+                    <strong>${item.title}</strong>
+                    <div class="game-meta">
+                        ${formatPlayers(item.players)}
+                        ${formatTime(item.time)}
+                    </div>
+                </div>
+                <p>${item.description}</p>
             </div>
         `;
 
         container.appendChild(row);
     });
+}
+
+function formatPlayers(players) {
+    if (!players) return "";
+    if (players.min === players.max) {
+        return `👥 ${players.min}`;
+    }
+    return `👥 ${players.min}–${players.max}`;
+}
+
+function formatTime(time) {
+    if (!time) return "";
+    if (time.min === time.max) {
+        return `⏱ ${time.min} хв`;
+    }
+    return `⏱ ${time.min}–${time.max} хв`;
 }
 
 async function loadMasters() {
