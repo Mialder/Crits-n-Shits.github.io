@@ -90,7 +90,8 @@ nav {
     border-bottom: 1px solid var(--border-soft);
 }
 
-nav button {
+/* Стили для якорных ссылок (теперь <a>, а не <button>) */
+nav a {
     background: none;
     border: none;
     color: var(--text-muted);
@@ -99,13 +100,15 @@ nav button {
     font-size: 1rem;
     letter-spacing: 0.5px;
     transition: all 0.25s ease;
+    text-decoration: none; /* Убираем подчеркивание */
 }
 
-nav button:hover {
+nav a:hover {
     color: var(--accent-gold);
 }
 
-nav button.active {
+/* Активная ссылка (можно управлять этим через JS, но пока оставим класс) */
+nav a.active {
     color: var(--bg-main);
     background: linear-gradient(
         135deg,
@@ -125,26 +128,46 @@ main {
     padding: 0 20px;
 }
 
-.tab {
-    display: none;
+/* УДАЛЯЕМ ВСЕ СТИЛИ .tab, .tab.active И @keyframes fadeIn */
+section {
+    padding: 40px 0; /* Добавляем отступы между секциями */
+    border-bottom: 1px solid var(--border-soft); /* Разделитель между секциями */
 }
 
-.tab.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
+section:last-child {
+    border-bottom: none;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* =====================
+    КНОПКА "БОЛЬШЕ"
+===================== */
+
+.section-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
 }
 
-h2 {
-    margin-top: 0;
-    font-size: 2rem;
-    color: var(--accent-gold);
-    border-bottom: 2px solid var(--border-soft);
-    padding-bottom: 6px;
+.button-more {
+    display: inline-block;
+    padding: 12px 25px;
+    background: linear-gradient(
+        135deg,
+        var(--accent-gold),
+        var(--accent-gold-dark)
+    );
+    color: var(--bg-main);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
 }
 
 /* =====================
