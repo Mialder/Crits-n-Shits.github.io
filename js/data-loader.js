@@ -42,6 +42,22 @@ async function loadMasters() {
     });
 }
 
+async function loadGallery() {
+    const response = await fetch("data/gallery.json");
+    const data = await response.json();
+
+    const container = document.getElementById("gallery-list");
+
+    data.forEach(item => {
+        const img = document.createElement("img");
+        img.src = item.image;
+        img.alt = item.alt || "Фото клуба";
+
+        container.appendChild(img);
+    });
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     loadGames("data/boardgames.json", "boardgames-list");
     loadGames("data/rpg.json", "rpg-list");
