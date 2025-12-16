@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Crits n Shits — клуб настольных игр</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -105,7 +107,13 @@
 
     <section id="gallery">
         <h2>Галерея</h2>
-        <div id="gallery-list" class="gallery"></div>
+        <div class="gallery-carousel">
+            <div id="gallery-list" class="gallery"></div>
+            <div class="gallery-arrows">
+                <button id="gallery-prev" onclick="galleryPrev()" aria-label="Попередні">&#8592;</button>
+                <button id="gallery-next" onclick="galleryNext()" aria-label="Наступні">&#8594;</button>
+            </div>
+        </div>
 
         <div class="section-footer">
             <a href="gallery-full.html" class="button-more">Більше галереї...</a>

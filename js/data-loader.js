@@ -143,21 +143,26 @@ function mastersNext() {
     }
 }
 
-async function loadGallery(count = -1) {
-    const response = await fetch("data/gallery.json");
-    const data = await response.json();
+let galleryData = [];
+let currentGalleryIndex = 0;
+const GALLERY_VISIBLE = 5;
 
-    let itemsToDisplay = data;
-    
-    if (count > 0) {
-        itemsToDisplay = shuffleArray([...data]).slice(0, count);
-    }
-    
+async function loadGallery() {
+    const response = await fetch("data/gallery.json");
+    galleryData = await response.json();
+
+    renderGallery();
+    updateGalleryArrows();
+}
+
+function renderGallery() {
     const container = document.getElementById("gallery-list");
     if (!container) return;
     container.innerHTML = "";
 
-    itemsToDisplay.forEach(item => {
+    const visibleItems = galleryData.slice(currentGalleryIndex, currentGalleryIndex + GALLERY_VISIBLE);
+
+    visibleItems.forEach(item => {
         const img = document.createElement("img");
         img.src = item.image;
         img.alt = item.alt || "Фото клубу";
@@ -165,10 +170,42 @@ async function loadGallery(count = -1) {
     });
 }
 
+function updateGalleryArrows() {
+    const prevBtn = document.getElementById("gallery-prev");
+    const nextBtn = document.getElementById("gallery-next");
+    const arrowsContainer = document.querySelector(".gallery-arrows");
+    
+    if (!arrowsContainer) return;
+
+    if (galleryData.length <= GALLERY_VISIBLE) {
+        arrowsContainer.style.display = "none";
+    } else {
+        arrowsContainer.style.display = "flex";
+        if (prevBtn) prevBtn.disabled = currentGalleryIndex === 0;
+        if (nextBtn) nextBtn.disabled = currentGalleryIndex >= galleryData.length - GALLERY_VISIBLE;
+    }
+}
+
+function galleryPrev() {
+    if (currentGalleryIndex > 0) {
+        currentGalleryIndex--;
+        renderGallery();
+        updateGalleryArrows();
+    }
+}
+
+function galleryNext() {
+    if (currentGalleryIndex < galleryData.length - GALLERY_VISIBLE) {
+        currentGalleryIndex++;
+        renderGallery();
+        updateGalleryArrows();
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadGames("data/boardgames.json", "boardgames-list", 3);
     loadGames("data/rpg.json", "rpg-list", 3);
     loadGames("data/wargames.json", "wargames-list", 3);
     loadMasters();
-    loadGallery(5);
+    loadGallery();
 });
