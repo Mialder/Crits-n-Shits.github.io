@@ -85,10 +85,21 @@ function filterAndSortGames() {
                 return a.title.localeCompare(b.title, 'uk', { sensitivity: 'base' });
             case 'title-desc':
                 return b.title.localeCompare(a.title, 'uk', { sensitivity: 'base' });
+
             case 'players-asc':
+                // Сортування за мінімальною кількістю гравців (за зростанням)
                 return (a.players.min || Infinity) - (b.players.min || Infinity);
+            case 'players-desc':
+                // Сортування за максимальною кількістю гравців (за спаданням)
+                return (b.players.max || -Infinity) - (a.players.max || -Infinity); 
+
             case 'time-asc':
+                // Сортування за мінімальним часом (за зростанням)
                 return (a.time.min || Infinity) - (b.time.min || Infinity);
+            case 'time-desc':
+                // Сортування за максимальним часом (за спаданням)
+                return (b.time.max || -Infinity) - (a.time.max || -Infinity); 
+
             default:
                 return 0;
         }

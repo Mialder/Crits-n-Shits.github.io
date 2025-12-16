@@ -51,9 +51,10 @@
 
         /* Стилі для повного списку ігор */
         #full-games-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px; /* Збільшений проміжок для кращого вигляду карток */
+            /* Змінюємо сітку на простий вертикальний стек */
+            display: flex; 
+            flex-direction: column; /* Стекування карток */
+            gap: 25px; 
         }
 
         /* Специфічні стилі для карток на цій сторінці */
@@ -61,52 +62,73 @@
             position: relative;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); /* Більш виражена тінь */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             color: var(--text-main);
-            min-height: 250px; /* Мінімальна висота для фонового зображення */
+            min-height: 250px; 
+
+            /* Картка тепер буде займати всю доступну ширину */
+            width: 100%; 
+            max-width: 100%;
+
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             background-size: cover;
             background-position: center;
             background-color: var(--bg-secondary);
+
+            /* Ефект затемнення: додаємо псевдоелемент для градієнту */
+            z-index: 1;
+        }
+
+        .game-card-full::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Посилений градієнт для кращого контрасту тексту */
+            background: linear-gradient(0deg, rgba(5, 15, 15, 0.98) 0%, rgba(5, 15, 15, 0.85) 40%, rgba(5, 15, 15, 0.1) 100%);
+            z-index: 2;
         }
 
         .game-card-full:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transform: none; /* Забираємо підйом, щоб не було зміщення при широкій картці */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         }
 
         .card-overlay {
-            background: linear-gradient(0deg, rgba(15, 46, 46, 0.95) 0%, rgba(15, 46, 46, 0.7) 40%, rgba(15, 46, 46, 0.1) 100%);
-            padding: 20px;
-            padding-top: 50px;
+            position: relative;
+            z-index: 3; /* Виводимо вміст картки над затемненням */
+            padding: 25px;
+            padding-top: 60px;
             border-radius: 0 0 16px 16px;
         }
 
         .card-overlay strong {
-            font-size: 1.5rem;
+            font-size: 1.8rem; /* Збільшений контраст */
             color: var(--accent-gold);
             display: block;
-            margin-bottom: 5px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            margin-bottom: 8px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8); /* Чіткіший тінь тексту */
         }
 
         .card-overlay p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            opacity: 0.9;
+            font-size: 1.0rem; /* Збільшений контраст */
+            color: var(--text-main); /* Основний колір тексту для кращого контрасту */
+            opacity: 1;
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        /* Перевизначення стилів для мета-даних і тегів */
         .game-meta-footer {
             border-top: 1px dashed var(--border-soft);
             color: var(--text-main);
             opacity: 1;
+            padding-top: 10px;
         }
 
         .game-tags .tag {
@@ -163,8 +185,8 @@
                 <option value="title-asc">Сортувати: Назва (А-Я)</option>
                 <option value="title-desc">Назва (Я-А)</option>
                 <option value="players-asc">Гравці (мін. ↑)</option>
-                <option value="time-asc">Час (мін. ↑)</option>
-            </select>
+                <option value="players-desc">Гравці (макс. ↓)</option> <option value="time-asc">Час (мін. ↑)</option>
+                <option value="time-desc">Час (макс. ↓)</option> </select>
         </div>
 
         <div id="full-games-list">
