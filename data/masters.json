@@ -10,5 +10,17 @@
     "systems": ["FATE", "Ваншоты", "Експериментальні формати"],
     "description": "Спеціалізується на наративних системах та нестандартних сетингах.",
     "image": "images/masters/maria.jpg"
+  },
+  {
+    "name": "Дмитро",
+    "systems": ["Warhammer Fantasy", "Call of Cthulhu"],
+    "description": "Фанат темного фентезі та хоррору. Створює атмосферні сесії з глибоким лором.",
+    "image": "images/masters/dmitro.jpg"
+  },
+  {
+    "name": "Олена",
+    "systems": ["Pathfinder 2e", "Starfinder"],
+    "description": "Любить складні бойові системи та детальне планування пригод.",
+    "image": "images/masters/olena.jpg"
   }
 ]

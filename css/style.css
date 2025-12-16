@@ -29,12 +29,18 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
-    font-family: "Segoe UI", system-ui, sans-serif;
-    background: radial-gradient(circle at top, #164545, var(--bg-main));
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: linear-gradient(180deg, #164545 0%, var(--bg-main) 100%);
+    background-attachment: fixed;
     color: var(--text-main);
-    line-height: 1.6;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* =====================
@@ -91,7 +97,9 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background: var(--bg-secondary);
+    background: rgba(20, 59, 59, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-soft);
 }
 
@@ -221,28 +229,29 @@ section:last-child {
 
 h2 {
     margin-top: 0;
-    font-size: 2rem;
+    font-size: 1.9rem;
     color: var(--accent-gold);
     border-bottom: 2px solid var(--border-soft);
-    padding-bottom: 6px;
-    margin-bottom: 30px;
-    
-    /* Стили для иконки в заголовке */
+    padding-bottom: 10px;
+    margin-bottom: 32px;
     display: flex;
     align-items: center;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .section-icon {
-    width: 28px;
-    height: 28px;
-    background-color: var(--accent-gold);
-    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+    border-radius: 8px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    margin-right: 12px;
+    margin-right: 14px;
     color: var(--bg-main);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(214, 168, 79, 0.3);
 }
 
 /* =====================
@@ -258,18 +267,18 @@ h2 {
 
 .game-row {
     position: relative;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
-    background-color: var(--bg-light-card); /* Светлый фон для карточки */
-    color: var(--text-dark); /* Темный текст */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--bg-light-card);
+    color: var(--text-dark);
     height: 100%;
 }
 
 .game-row:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .game-image {
@@ -367,28 +376,38 @@ h2 {
 
 .masters-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
 }
 
 .master-card {
     background: var(--bg-light-card);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
 }
 
 .master-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.master-header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
 }
 
 .master-portrait {
-    width: 100%;
-    height: 200px;
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
     overflow: hidden;
-    background: #e0e0e0;
+    background: linear-gradient(135deg, #e0e0e0, #c0c0c0);
+    border-radius: 50%;
+    border: 3px solid var(--accent-gold);
 }
 
 .master-portrait img {
@@ -399,57 +418,62 @@ h2 {
 }
 
 .master-info {
-    padding: 15px 20px;
+    flex: 1;
 }
 
 .master-name {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--text-dark);
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    font-weight: 600;
 }
 
 .master-systems {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--accent-gold-dark);
-    margin: 0 0 10px 0;
+    margin: 0;
     font-weight: 500;
+    line-height: 1.4;
 }
 
 .master-description {
     font-size: 0.9rem;
     color: var(--text-dark);
-    opacity: 0.8;
-    margin: 0;
-    line-height: 1.5;
+    opacity: 0.75;
+    margin: 16px 0 0 0;
+    line-height: 1.6;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .masters-arrows {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
+    gap: 16px;
+    margin-top: 28px;
 }
 
 .masters-arrows button {
     background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
     border: none;
     color: var(--bg-main);
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(214, 168, 79, 0.3);
 }
 
 .masters-arrows button:hover:not(:disabled) {
     transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(214, 168, 79, 0.4);
 }
 
 .masters-arrows button:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
 }
 
@@ -466,17 +490,18 @@ h2 {
 /* НОВЫЕ СТИЛИ ДЛЯ ИЗОБРАЖЕНИЙ ВНУТРИ ГАЛЕРЕИ */
 .gallery img {
     width: 100%;
-    height: 200px; /* Фиксированная высота для единообразия */
-    object-fit: cover; /* Обрезка, чтобы заполнить область и избежать растяжения */
+    height: 200px;
+    object-fit: cover;
     display: block;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .gallery img:hover {
-    transform: scale(1.03); /* Небольшое увеличение при наведении */
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* =====================
@@ -485,10 +510,12 @@ h2 {
 
 footer {
     text-align: center;
-    padding: 30px 20px;
-    background: var(--bg-secondary);
+    padding: 40px 20px;
+    background: rgba(20, 59, 59, 0.95);
+    backdrop-filter: blur(10px);
     border-top: 1px solid var(--border-soft);
     color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 /* =====================

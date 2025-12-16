@@ -95,14 +95,16 @@ function renderMasters() {
         card.className = "master-card";
 
         card.innerHTML = `
-            <div class="master-portrait">
-                <img src="${master.image}" alt="${master.name}">
+            <div class="master-header">
+                <div class="master-portrait">
+                    <img src="${master.image}" alt="${master.name}">
+                </div>
+                <div class="master-info">
+                    <strong class="master-name">${master.name}</strong>
+                    <p class="master-systems">${master.systems.join(", ")}</p>
+                </div>
             </div>
-            <div class="master-info">
-                <strong class="master-name">${master.name}</strong>
-                <p class="master-systems">${master.systems.join(", ")}</p>
-                <p class="master-description">${master.description || ''}</p>
-            </div>
+            <p class="master-description">${master.description || ''}</p>
         `;
 
         container.appendChild(card);
