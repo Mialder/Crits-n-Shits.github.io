@@ -667,15 +667,22 @@ a:hover {
 .modal {
     display: none;
     position: fixed;
-    z-index: 2000;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
+    /* Переконайтеся, що ці значення максимально високі */
+    z-index: 9999 !important; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    overflow-y: auto; /* Дозволяє скролити опис, якщо він довгий */
 }
 
 .modal-content {
     background-color: var(--bg-main);
-    margin: 10% auto;
+    z-index: 10000 !important;
+    /* Додайте відступ зверху для мобілок */
+    margin: 50px auto;
     padding: 30px;
     border: 1px solid var(--accent-gold);
     width: 90%;

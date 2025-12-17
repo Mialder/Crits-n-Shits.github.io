@@ -290,46 +290,67 @@
 
             // Обробка натискання на подію (Відкриття модалки)
             eventClick: function(info) {
+                // 1. Негайно зупиняємо стандартний перехід Google
                 info.jsEvent.preventDefault();
+                info.jsEvent.stopPropagation();
 
-                // Налаштування для гарного форматування дати та часу без секунд
+                const start = info.event.start;
+                const end = info.event.end;
+
                 const timeOptions = { 
-                    weekday: 'long', 
-                    day: 'numeric', 
-                    month: 'long', 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
+                    weekday: 'long', day: 'numeric', month: 'long', 
+                    hour: '2-digit', minute: '2-digit' 
                 };
 
-                const startStr = info.event.start.toLocaleString('uk-UA', timeOptions);
-                let durationStr = startStr;
+                let durationStr = start.toLocaleString('uk-UA', timeOptions);
 
-                // Якщо є час закінчення, додаємо його
-                if (info.event.end) {
-                    const endOptions = { hour: '2-digit', minute: '2-digit' };
-                    const endStr = info.event.end.toLocaleString('uk-UA', endOptions);
-                    durationStr += ` — ${endStr}`;
+                if (end) {
+                    // Перевірка: якщо день той самий, показуємо лише години закінчення
+                    const isSameDay = start.toDateString() === end.toDateString();
+                    const endOptions = isSameDay 
+                        ? { hour: '2-digit', minute: '2-digit' }
+                        : timeOptions;
+
+                    durationStr += ` — ${end.toLocaleString('uk-UA', endOptions)}`;
                 }
 
-                // Заповнюємо дані в модалці
+                // Заповнення контенту
                 document.getElementById('modal-title').innerText = info.event.title;
                 document.getElementById('modal-time').innerText = durationStr;
+                document.getElementById('modal-description').innerHTML = info.event.extendedProps.description || "Опис відсутній";
 
-                // Обробка опису (якщо він порожній)
-                const description = info.event.extendedProps.description || "Опис події з'явиться незабаром...";
-                document.getElementById('modal-description').innerHTML = description;
+                // Посилання на Google Календар (опціонально)
+                const modalLink = document.getElementById('modal-link');
+                if (info.event.url) {
+                    modalLink.href = info.event.url;
+                    modalLink.style.display = "inline-block";
+                } else {
+                    modalLink.style.display = "none";
+                }
 
-                document.getElementById('modal-link').href = info.event.url;
+                // Показ вікна
+                const modal = document.getElementById('event-modal');
+                modal.style.display = "block";
 
-                document.getElementById('event-modal').style.display = "block";
+                // Блокуємо скрол основної сторінки під модалкою
+                document.body.style.overflow = "hidden"; 
             }
         });
 
         calendar.render();
 
-        // Закриття модалки
-        document.querySelector('.close-modal').onclick = () => modal.style.display = "none";
-        window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; };
+        
+        function closeModal() {
+            document.getElementById('event-modal').style.display = "none";
+            document.body.style.overflow = "auto"; // Повертаємо скрол
+        }
+
+        document.querySelector('.close-modal').onclick = closeModal;
+        window.onclick = (event) => {
+            if (event.target == document.getElementById('event-modal')) {
+                closeModal();
+            }
+        };
     });
     </script>
     
