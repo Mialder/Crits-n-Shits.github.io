@@ -677,7 +677,7 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    flex-wrap: nowrap; /* запрещаем перенос */
+    flex-wrap: nowrap; /* оставляем nowrap по умолчанию для десткопа */
 }
 
 /* Каждый "чанк" (left/center/right) — флекс контейнер */
@@ -728,45 +728,93 @@ a:hover {
         min-height: 260px; /* kompaktniy vid */
     }
 
-    .fc-toolbar-title { font-size: 0.95rem; }
-    .fc .fc-toolbar-chunk { gap: 4px; }
-    .fc .fc-button { padding: 5px 6px; font-size: 0.8rem; }
-    /* гарантируем, что левый/правый чанки не растягиваются */
-    .fc .fc-toolbar-chunk:first-child,
-    .fc .fc-toolbar-chunk:last-child {
-        flex: 0 0 auto;
+    .fc-toolbar-title { font-size: 1rem; }
+    .fc .fc-toolbar-chunk > .fc-button, .fc-button {
+        padding: 6px 8px;
+        font-size: 0.85rem;
     }
-    .fc .fc-toolbar-chunk.fc-center {
-        flex: 1 1 auto;
+
+    .modal-content {
+        margin: 20px auto;
+        padding: 18px;
+        width: 95%;
+        max-width: 420px;
+    }
+
+    nav a {
+        padding: 12px 14px;
+        font-size: 0.95rem;
     }
 }
 
-/* Разделение тулбара на мобильных */
+/* Убираем дублирующие и противоречивые мелкие медиаправила, и даём
+   одно корректное поведение для <=600px с достаточной специфичностью */
 @media (max-width: 600px) {
-    .fc-toolbar {
-        flex-wrap: wrap; /* Разрешаем перенос строк */
+    /* Повышенная специфичность — чтобы перебить .fc .fc-toolbar { flex-wrap: nowrap } */
+    .fc .fc-toolbar {
+        flex-wrap: wrap !important; /* разрешаем перенос строк на мобилке */
+        align-items: center;
     }
 
-    .fc-toolbar-chunk.fc-center {
-        order: 1; /* Перемещаем заголовок на вторую строку */
-        width: 100%; /* Растягиваем на всю ширину */
-        text-align: center; /* Выравниваем по центру */
-        margin-top: 6px; /* Добавляем отступ сверху */
+    /* Центр (заголовок) переносим на вторую строку и центрируем */
+    .fc .fc-toolbar-chunk.fc-center {
+        order: 1;
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        margin-top: 6px;
+        padding: 0 6px;
+        flex: 1 1 100%;
+        min-width: 0;
     }
 
-    .fc-toolbar-title {
-        font-size: 0.85rem; /* Уменьшаем размер заголовка */
+    /* Левая и правая группы остаются на первой строке */
+    .fc .fc-toolbar-chunk:first-child,
+    .fc .fc-toolbar-chunk:last-child {
+        order: 0;
+        flex: 0 0 auto;
+        gap: 6px;
     }
 
-    .fc-toolbar-chunk:first-child,
-    .fc-toolbar-chunk:last-child {
-        flex: 0 0 auto; /* Фиксируем ширину кнопок */
-        gap: 4px; /* Уменьшаем расстояние между элементами */
+    /* Заголовок месяца — ещё меньше, но не ломаем перенос текста */
+    .fc .fc-toolbar-title {
+        font-size: 0.8rem !important;
+        line-height: 1;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        margin: 0;
     }
 
-    .fc .fc-button {
-        padding: 4px 6px; /* Компактные кнопки */
-        font-size: 0.75rem; /* Уменьшаем шрифт кнопок */
+    /* Общие кнопки — компактнее */
+    .fc .fc-button, .fc .fc-toolbar .fc-button {
+        padding: 4px 6px !important;
+        font-size: 0.75rem !important;
+        line-height: 1;
+        height: auto;
+        min-width: 34px;
+    }
+
+    /* Отдельно уменьшаем стрелки prev/next, чтобы они были визуально маленькие */
+    .fc .fc-button.fc-prev-button,
+    .fc .fc-button.fc-next-button {
+        padding: 4px 8px !important;
+        font-size: 0.75rem !important;
+        min-width: 34px;
+        height: 30px;
+        border-radius: 6px;
+    }
+
+    /* Если есть группа кнопок (например view-toggle), не даём им переноситься внутри своей группы */
+    .fc .fc-button-group {
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    /* Уменьшаем шрифт цифр в ячейках календаря на мобилке */
+    .fc-daygrid-day-number {
+        font-size: 0.7rem !important;
+        line-height: 1;
     }
 }
 
