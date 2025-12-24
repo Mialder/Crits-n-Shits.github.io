@@ -26,6 +26,7 @@
     <button class="nav-toggle" aria-label="Меню">☰</button>
     <div class="nav-links">
         <a href="#about" class="active">Про нас</a>
+        <a href="#events-schedule">Розклад</a>
         <a href="#boardgames">Настолки</a>
         <a href="#rpg">НРІ</a>
         <a href="#wargames">Варгейми</a>
@@ -75,6 +76,22 @@
         </div>
     </section>
 
+    <section id="events-schedule">
+        <h2><span class="section-icon">📅</span> Розклад ігор</h2>
+        <div id="calendar-container"></div>
+    </section>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-time" style="color: var(--accent-gold); font-weight: 600;"></p>
+            <div id="modal-description"></div>
+            <div class="modal-footer">
+                <a href="#" id="modal-link" target="_blank" class="tag">Додати в мій календар</a>
+            </div>
+        </div>
+    </div>
 
     <section id="boardgames">
         <h2>
@@ -237,24 +254,6 @@
         </ul>
     </section>
 
-    <section id="events-schedule">
-        <h2><span class="section-icon">📅</span> Розклад ігор</h2>
-        <div id="calendar-container"></div>
-    </section>
-
-    <div id="event-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3 id="modal-title"></h3>
-            <p id="modal-time" style="color: var(--accent-gold); font-weight: 600;"></p>
-            <div id="modal-description"></div>
-            <div class="modal-footer">
-                <a href="#" id="modal-link" target="_blank" class="tag">Додати в мій календар</a>
-            </div>
-        </div>
-    </div>
-    
-
 </main>
 
 <footer>
@@ -265,95 +264,114 @@
 <script src="js/scroll-spy.js"></script>
 <script src="js/mobile-nav.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.8/index.global.min.js"></script>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar-container');
-        const modal = document.getElementById('event-modal');
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar-container');
+    const modal = document.getElementById('event-modal');
 
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'uk', // Українська мова
-            googleCalendarApiKey: 'AIzaSyD7DRPvqMrBzWWMccgMaeZ3vWbkGIrWqIE',
-            events: {
-                googleCalendarId: '54e6fa3d1b38f93f27207fea8371682c582478269171ab2639223f0395a8acb3@group.calendar.google.com'
-            },
+    // Инициализация календаря
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        // По умолчанию будет меняться динамически ниже
+        initialView: 'dayGridMonth',
+        locale: 'uk', // Украинская локаль (настройки управления)
+        height: 'auto',
+        googleCalendarApiKey: 'AIzaSyD7DRPvqMrBzWWMccgMaeZ3vWbkGIrWqIE',
+        events: {
+            googleCalendarId: '54e6fa3d1b38f93f27207fea8371682c582478269171ab2639223f0395a8acb3@group.calendar.google.com'
+        },
 
-            // Налаштування вигляду кнопок
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,listWeek'
-            },
+        // Локализованные подписи кнопок (на случай, если требуется явно)
+        buttonText: {
+            today: 'Сьогодні',
+            month: 'Місяць',
+            listWeek: 'Список тижня'
+        },
 
-            // Обробка натискання на подію (Відкриття модалки)
-            eventClick: function(info) {
-                // 1. Негайно зупиняємо стандартний перехід Google
-                info.jsEvent.preventDefault();
-                info.jsEvent.stopPropagation();
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,listWeek'
+        },
 
-                const start = info.event.start;
-                const end = info.event.end;
+        // Обработка клика по событию: вызывает модалку
+        eventClick: function(info) {
+            info.jsEvent.preventDefault();
+            info.jsEvent.stopPropagation();
 
-                const timeOptions = { 
-                    weekday: 'long', day: 'numeric', month: 'long', 
-                    hour: '2-digit', minute: '2-digit' 
-                };
+            const start = info.event.start;
+            const end = info.event.end;
 
-                let durationStr = start.toLocaleString('uk-UA', timeOptions);
+            const timeOptions = {
+                weekday: 'long', day: 'numeric', month: 'long',
+                hour: '2-digit', minute: '2-digit'
+            };
 
-                if (end) {
-                    // Перевірка: якщо день той самий, показуємо лише години закінчення
-                    const isSameDay = start.toDateString() === end.toDateString();
-                    const endOptions = isSameDay 
-                        ? { hour: '2-digit', minute: '2-digit' }
-                        : timeOptions;
+            let durationStr = start.toLocaleString('uk-UA', timeOptions);
 
-                    durationStr += ` — ${end.toLocaleString('uk-UA', endOptions)}`;
-                }
+            if (end) {
+                const isSameDay = start.toDateString() === end.toDateString();
+                const endOptions = isSameDay
+                    ? { hour: '2-digit', minute: '2-digit' }
+                    : timeOptions;
 
-                // Заповнення контенту
-                document.getElementById('modal-title').innerText = info.event.title;
-                document.getElementById('modal-time').innerText = durationStr;
-                document.getElementById('modal-description').innerHTML = info.event.extendedProps.description || "Опис відсутній";
-
-                // Посилання на Google Календар (опціонально)
-                const modalLink = document.getElementById('modal-link');
-                if (info.event.url) {
-                    modalLink.href = info.event.url;
-                    modalLink.style.display = "inline-block";
-                } else {
-                    modalLink.style.display = "none";
-                }
-
-                // Показ вікна
-                const modal = document.getElementById('event-modal');
-                modal.style.display = "block";
-
-                // Блокуємо скрол основної сторінки під модалкою
-                document.body.style.overflow = "hidden"; 
+                durationStr += ` — ${end.toLocaleString('uk-UA', endOptions)}`;
             }
-        });
 
-        calendar.render();
+            document.getElementById('modal-title').innerText = info.event.title;
+            document.getElementById('modal-time').innerText = durationStr;
+            document.getElementById('modal-description').innerHTML = info.event.extendedProps.description || "Опис відсутній";
 
-        
-        function closeModal() {
-            document.getElementById('event-modal').style.display = "none";
-            document.body.style.overflow = "auto"; // Повертаємо скрол
+            const modalLink = document.getElementById('modal-link');
+            if (info.event.url) {
+                modalLink.href = info.event.url;
+                modalLink.style.display = "inline-block";
+            } else {
+                modalLink.style.display = "none";
+            }
+
+            document.getElementById('event-modal').style.display = "block";
+            document.body.style.overflow = "hidden";
         }
-
-        document.querySelector('.close-modal').onclick = closeModal;
-        window.onclick = (event) => {
-            if (event.target == document.getElementById('event-modal')) {
-                closeModal();
-            }
-        };
     });
-    </script>
-    
-    
+
+    calendar.render();
+
+    // Адаптивное представление: на узких экранах переключаемся в listWeek
+    function setResponsiveView() {
+        if (!calendar) return;
+        const mobileBreakpoint = 600;
+        const currentView = calendar.view.type;
+        if (window.innerWidth <= mobileBreakpoint && currentView !== 'listWeek') {
+            calendar.changeView('listWeek');
+        } else if (window.innerWidth > mobileBreakpoint && currentView !== 'dayGridMonth') {
+            calendar.changeView('dayGridMonth');
+        }
+    }
+
+    // Запуск при инициализации и при ресайзе с debounce
+    setResponsiveView();
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(setResponsiveView, 200);
+    });
+
+    function closeModal() {
+        document.getElementById('event-modal').style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    document.querySelector('.close-modal').onclick = closeModal;
+    window.onclick = (event) => {
+        if (event.target == document.getElementById('event-modal')) {
+            closeModal();
+        }
+    };
+});
+</script>
+
 </body>
 </html>
